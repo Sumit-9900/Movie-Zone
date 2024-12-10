@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/common/helper/navigation/app_navigation.dart';
 import 'package:movie_app/core/configs/assets/app_images.dart';
 import 'package:movie_app/core/configs/theme/app_colors.dart';
-import 'package:movie_app/domain/home/entities/upcoming_movie.dart';
+import 'package:movie_app/core/entities/movie.dart';
+import 'package:movie_app/presentation/watch/pages/watch_page.dart';
 
-class UpcomingCard extends StatelessWidget {
-  final List<UpcomingMovie> movies;
-  const UpcomingCard({super.key, required this.movies});
+class MovieCard extends StatelessWidget {
+  final List<Movie> movies;
+  final double horizontalPadding;
+  const MovieCard({
+    super.key,
+    required this.movies,
+    this.horizontalPadding = 16,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +20,9 @@ class UpcomingCard extends StatelessWidget {
       height: 300,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
         itemBuilder: (context, index) {
-          return _movieCard(movies[index]);
+          return _movieCard(movies[index], context);
         },
         separatorBuilder: (context, index) {
           return const SizedBox(width: 10);
@@ -25,9 +32,11 @@ class UpcomingCard extends StatelessWidget {
     );
   }
 
-  Widget _movieCard(UpcomingMovie movie) {
+  Widget _movieCard(Movie movie, BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        AppNavigation.push(context, WatchPage(movie: movie));
+      },
       child: Container(
         width: 180,
         decoration: BoxDecoration(

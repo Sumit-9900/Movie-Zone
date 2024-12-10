@@ -9,6 +9,9 @@ import 'package:movie_app/presentation/home/bloc/trending_bloc.dart';
 import 'package:movie_app/presentation/home/bloc/upcoming_bloc.dart';
 import 'package:movie_app/presentation/home/pages/home_page.dart';
 import 'package:movie_app/presentation/splash/cubit/splash_cubit.dart';
+import 'package:movie_app/presentation/watch/bloc/recommendations_bloc.dart';
+import 'package:movie_app/presentation/watch/bloc/similars_bloc.dart';
+import 'package:movie_app/presentation/watch/bloc/trailer_bloc.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -38,6 +41,15 @@ void main() {
         ),
         BlocProvider(
           create: (context) => serviceLocator<UpcomingBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => serviceLocator<TrailerBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => serviceLocator<RecommendationsBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => serviceLocator<SimilarsBloc>(),
         ),
       ],
       child: const MyApp(),

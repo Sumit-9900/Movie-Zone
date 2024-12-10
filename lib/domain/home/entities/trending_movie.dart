@@ -1,5 +1,3 @@
-import 'package:movie_app/data/home/models/trending_movie_model.dart';
-
 class TrendingMovie {
   final String backdropPath;
   final int id;
@@ -7,7 +5,7 @@ class TrendingMovie {
   final String originalTitle;
   final String overview;
   final String posterPath;
-  final MediaType mediaType;
+  final String mediaType;
   final bool adult;
   final String originalLanguage;
   final List<int> genreIds;

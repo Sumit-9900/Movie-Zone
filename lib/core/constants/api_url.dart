@@ -5,8 +5,6 @@ class ApiUrl {
   static const signup = '${movieApiV}auth/signup';
   static const signin = '${movieApiV}auth/signin';
 
-  static const query = 'language=en-US&page=1';
-
   static const trendingMovies = '$movieApiV/trending';
   static const nowPlayingMovies = '$movieApiV/nowplaying';
   static const upcomingMovies = '$movieApiV/upcoming';

@@ -1,6 +1,6 @@
-class UpcomingMovie {
+class Movie {
   final bool adult;
-  final String backdropPath;
+  final String? backdropPath;
   final List<int> genreIds;
   final int id;
   final String originalLanguage;
@@ -14,7 +14,7 @@ class UpcomingMovie {
   final double voteAverage;
   final int voteCount;
 
-  UpcomingMovie({
+  Movie({
     required this.adult,
     required this.backdropPath,
     required this.genreIds,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/core/entities/movie.dart';
 import 'package:movie_app/core/usecase/usecase.dart';
-import 'package:movie_app/domain/home/entities/upcoming_movie.dart';
 import 'package:movie_app/domain/home/usecases/get_upcoming_movies.dart';
 
 part 'upcoming_event.dart';

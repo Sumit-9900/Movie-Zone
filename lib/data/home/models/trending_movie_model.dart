@@ -27,7 +27,7 @@ class TrendingMovieModel extends TrendingMovie {
         originalTitle: json["original_title"],
         overview: json["overview"],
         posterPath: json["poster_path"],
-        mediaType: mediaTypeValues.map[json["media_type"]]!,
+        mediaType: json["media_type"],
         adult: json["adult"],
         originalLanguage: json["original_language"],
         genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
@@ -45,7 +45,7 @@ class TrendingMovieModel extends TrendingMovie {
         "original_title": originalTitle,
         "overview": overview,
         "poster_path": posterPath,
-        "media_type": mediaTypeValues.reverse[mediaType],
+        "media_type": mediaType,
         "adult": adult,
         "original_language": originalLanguage,
         "genre_ids": List<dynamic>.from(genreIds.map((x) => x)),
@@ -56,20 +56,4 @@ class TrendingMovieModel extends TrendingMovie {
         "vote_average": voteAverage,
         "vote_count": voteCount,
       };
-}
-
-enum MediaType { MOVIE }
-
-final mediaTypeValues = EnumValues({"movie": MediaType.MOVIE});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

@@ -8,7 +8,7 @@ final class UpcomingInitial extends UpcomingState {}
 final class UpcomingLoading extends UpcomingState {}
 
 final class UpcomingSuccess extends UpcomingState {
-  final List<UpcomingMovie> movies;
+  final List<Movie> movies;
   UpcomingSuccess(this.movies);
 }
 

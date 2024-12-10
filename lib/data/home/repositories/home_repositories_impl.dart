@@ -2,9 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:movie_app/core/error/exception.dart';
 import 'package:movie_app/core/error/failure.dart';
 import 'package:movie_app/data/home/datasources/home_remote_data_source.dart';
-import 'package:movie_app/domain/home/entities/now_playing_movie.dart';
+import 'package:movie_app/core/entities/movie.dart';
 import 'package:movie_app/domain/home/entities/trending_movie.dart';
-import 'package:movie_app/domain/home/entities/upcoming_movie.dart';
 import 'package:movie_app/domain/home/repositories/home_repositories.dart';
 
 class HomeRepositoriesImpl implements HomeRepositories {
@@ -12,7 +11,7 @@ class HomeRepositoriesImpl implements HomeRepositories {
   HomeRepositoriesImpl(this.homeRemoteDataSource);
 
   @override
-  Future<Either<Failure, List<NowPlayingMovie>>> getNowPlayingMovies() async {
+  Future<Either<Failure, List<Movie>>> getNowPlayingMovies() async {
     try {
       final nowPlayingMovies = await homeRemoteDataSource.nowPlayingMovies();
 
@@ -34,7 +33,7 @@ class HomeRepositoriesImpl implements HomeRepositories {
   }
 
   @override
-  Future<Either<Failure, List<UpcomingMovie>>> getUpcomingMovies() async {
+  Future<Either<Failure, List<Movie>>> getUpcomingMovies() async {
     try {
       final upcomingMovies = await homeRemoteDataSource.upcomingMovies();
 

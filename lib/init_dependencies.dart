@@ -28,6 +28,12 @@ void initDependencies() {
     ),
   );
 
+  serviceLocator.registerFactory<WatchRemoteDataSource>(
+    () => WatchRemoteDataSourceImpl(
+      serviceLocator(),
+    ),
+  );
+
   serviceLocator.registerFactory<AuthRepositories>(
     () => AuthRepositoriesImpl(
       serviceLocator(),
@@ -36,6 +42,12 @@ void initDependencies() {
 
   serviceLocator.registerFactory<HomeRepositories>(
     () => HomeRepositoriesImpl(
+      serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerFactory<WatchRepositories>(
+    () => WatchRepositoriesImpl(
       serviceLocator(),
     ),
   );
@@ -76,6 +88,24 @@ void initDependencies() {
     ),
   );
 
+  serviceLocator.registerFactory(
+    () => GetMovieTrailer(
+      serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerFactory(
+    () => GetMovieRecommendations(
+      serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerFactory(
+    () => GetMovieSimilars(
+      serviceLocator(),
+    ),
+  );
+
   serviceLocator.registerLazySingleton(
     () => AuthBloc(
       userSignUp: serviceLocator(),
@@ -104,6 +134,24 @@ void initDependencies() {
   serviceLocator.registerLazySingleton(
     () => UpcomingBloc(
       getUpcomingMovies: serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerLazySingleton(
+    () => TrailerBloc(
+      getMovieTrailer: serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerLazySingleton(
+    () => RecommendationsBloc(
+      getMovieRecommendations: serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerLazySingleton(
+    () => SimilarsBloc(
+      getMovieSimilars: serviceLocator(),
     ),
   );
 }

@@ -8,7 +8,7 @@ final class NowPlayingInitial extends NowPlayingState {}
 final class NowPlayingLoading extends NowPlayingState {}
 
 final class NowPlayingSuccess extends NowPlayingState {
-  final List<NowPlayingMovie> movies;
+  final List<Movie> movies;
   NowPlayingSuccess(this.movies);
 }
 

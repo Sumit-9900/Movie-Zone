@@ -1,7 +1,7 @@
-import 'package:movie_app/domain/home/entities/now_playing_movie.dart';
+import 'package:movie_app/core/entities/movie.dart';
 
-class NowPlayingMovieModel extends NowPlayingMovie {
-  NowPlayingMovieModel({
+class MovieModel extends Movie {
+  MovieModel({
     required super.adult,
     required super.backdropPath,
     required super.genreIds,
@@ -18,14 +18,12 @@ class NowPlayingMovieModel extends NowPlayingMovie {
     required super.voteCount,
   });
 
-  factory NowPlayingMovieModel.fromJson(Map<String, dynamic> json) =>
-      NowPlayingMovieModel(
+  factory MovieModel.fromJson(Map<String, dynamic> json) => MovieModel(
         adult: json["adult"],
         backdropPath: json["backdrop_path"],
         genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
         id: json["id"],
-        originalLanguage:
-            originalLanguageValues.map[json["original_language"]]!,
+        originalLanguage: json["original_language"],
         originalTitle: json["original_title"],
         overview: json["overview"],
         popularity: json["popularity"]?.toDouble(),
@@ -42,7 +40,7 @@ class NowPlayingMovieModel extends NowPlayingMovie {
         "backdrop_path": backdropPath,
         "genre_ids": List<dynamic>.from(genreIds.map((x) => x)),
         "id": id,
-        "original_language": originalLanguageValues.reverse[originalLanguage],
+        "original_language": originalLanguage,
         "original_title": originalTitle,
         "overview": overview,
         "popularity": popularity,
@@ -54,24 +52,4 @@ class NowPlayingMovieModel extends NowPlayingMovie {
         "vote_average": voteAverage,
         "vote_count": voteCount,
       };
-}
-
-enum OriginalLanguage { EN, ES, FR }
-
-final originalLanguageValues = EnumValues({
-  "en": OriginalLanguage.EN,
-  "es": OriginalLanguage.ES,
-  "fr": OriginalLanguage.FR
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

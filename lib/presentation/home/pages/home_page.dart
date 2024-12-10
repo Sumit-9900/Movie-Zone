@@ -7,9 +7,8 @@ import 'package:movie_app/presentation/home/bloc/now_playing_bloc.dart';
 import 'package:movie_app/presentation/home/bloc/trending_bloc.dart';
 import 'package:movie_app/presentation/home/bloc/upcoming_bloc.dart';
 import 'package:movie_app/presentation/home/widgets/category_text.dart';
-import 'package:movie_app/presentation/home/widgets/now_playing_card.dart';
+import 'package:movie_app/presentation/home/widgets/movie_card.dart';
 import 'package:movie_app/presentation/home/widgets/trending_movies.dart';
-import 'package:movie_app/presentation/home/widgets/upcoming_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -47,7 +46,7 @@ class _HomePageState extends State<HomePage> {
                     child: Text('${state.message} !!!'),
                   );
                 } else if (state is TrendingLoading) {
-                  return const Loader();
+                  return const SizedBox(height: 250, child: Loader());
                 } else if (state is TrendingSuccess) {
                   return TrendingMovies(movies: state.movies);
                 }
@@ -63,9 +62,9 @@ class _HomePageState extends State<HomePage> {
                     child: Text('${state.message} !!!'),
                   );
                 } else if (state is NowPlayingLoading) {
-                  return const Loader();
+                  return const SizedBox(height: 200, child: Loader());
                 } else if (state is NowPlayingSuccess) {
-                  return NowPlayingCard(movies: state.movies);
+                  return MovieCard(movies: state.movies);
                 }
                 return Container();
               },
@@ -79,13 +78,14 @@ class _HomePageState extends State<HomePage> {
                     child: Text('${state.message} !!!'),
                   );
                 } else if (state is UpcomingLoading) {
-                  return const Loader();
+                  return const SizedBox(height: 200, child: Loader());
                 } else if (state is UpcomingSuccess) {
-                  return UpcomingCard(movies: state.movies);
+                  return MovieCard(movies: state.movies);
                 }
                 return Container();
               },
-            )
+            ),
+            const SizedBox(height: 16),
           ],
         ),
       ),
