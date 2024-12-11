@@ -120,38 +120,8 @@ void initDependencies() {
   );
 
   serviceLocator.registerLazySingleton(
-    () => TrendingBloc(
-      getTrendingMovies: serviceLocator(),
-    ),
-  );
-
-  serviceLocator.registerLazySingleton(
-    () => NowPlayingBloc(
-      getNowPlayingMovies: serviceLocator(),
-    ),
-  );
-
-  serviceLocator.registerLazySingleton(
-    () => UpcomingBloc(
-      getUpcomingMovies: serviceLocator(),
-    ),
-  );
-
-  serviceLocator.registerLazySingleton(
     () => TrailerBloc(
       getMovieTrailer: serviceLocator(),
-    ),
-  );
-
-  serviceLocator.registerLazySingleton(
-    () => RecommendationsBloc(
-      getMovieRecommendations: serviceLocator(),
-    ),
-  );
-
-  serviceLocator.registerLazySingleton(
-    () => SimilarsBloc(
-      getMovieSimilars: serviceLocator(),
     ),
   );
 }

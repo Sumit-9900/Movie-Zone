@@ -1,42 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/common/bloc/generic_data_bloc.dart';
 import 'package:movie_app/common/widgets/loader.dart';
 import 'package:movie_app/core/entities/movie.dart';
+import 'package:movie_app/domain/watch/usecases/get_movie_recommendations.dart';
+import 'package:movie_app/init_dependencies_imports.dart';
 import 'package:movie_app/presentation/home/widgets/movie_card.dart';
-import 'package:movie_app/presentation/watch/bloc/recommendations_bloc.dart';
 
-class RecommendationsMovie extends StatefulWidget {
+class RecommendationsMovie extends StatelessWidget {
   final Movie movie;
   const RecommendationsMovie({super.key, required this.movie});
 
   @override
-  State<RecommendationsMovie> createState() => _RecommendationsMovieState();
-}
-
-class _RecommendationsMovieState extends State<RecommendationsMovie> {
-  @override
-  void initState() {
-    context
-        .read<RecommendationsBloc>()
-        .add(RecommendationsLoaded(widget.movie.id));
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RecommendationsBloc, RecommendationsState>(
-      builder: (context, state) {
-        if (state is RecommendationsLoading) {
-          return const SizedBox(height: 200, child: Loader());
-        } else if (state is RecommendationsFailure) {
-          return Center(
-            child: Text(state.message),
-          );
-        } else if (state is RecommendationsSuccess) {
-          return MovieCard(movies: state.movies, horizontalPadding: 0);
-        }
-        return Container();
-      },
+    return BlocProvider(
+      create: (context) => GenericDataBloc<List<Movie>>()
+        ..add(
+          GenericDataLoaded(serviceLocator<GetMovieRecommendations>(), movie.id),
+        ),
+      child: BlocBuilder<GenericDataBloc<List<Movie>>, GenericDataState>(
+        builder: (context, state) {
+          if (state is GenericDataLoading) {
+            return const SizedBox(height: 200, child: Loader());
+          } else if (state is GenericDataFailure) {
+            return Center(
+              child: Text(state.message),
+            );
+          } else if (state is GenericDataSuccess<List<Movie>>) {
+            return MovieCard(movies: state.data, horizontalPadding: 0);
+          }
+          return Container();
+        },
+      ),
     );
   }
 }

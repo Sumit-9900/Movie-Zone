@@ -21,12 +21,7 @@ import 'package:movie_app/domain/watch/usecases/get_movie_recommendations.dart';
 import 'package:movie_app/domain/watch/usecases/get_movie_similars.dart';
 import 'package:movie_app/domain/watch/usecases/get_movie_trailer.dart';
 import 'package:movie_app/presentation/auth/bloc/auth_bloc.dart';
-import 'package:movie_app/presentation/home/bloc/now_playing_bloc.dart';
-import 'package:movie_app/presentation/home/bloc/trending_bloc.dart';
-import 'package:movie_app/presentation/home/bloc/upcoming_bloc.dart';
 import 'package:movie_app/presentation/splash/cubit/splash_cubit.dart';
-import 'package:movie_app/presentation/watch/bloc/recommendations_bloc.dart';
-import 'package:movie_app/presentation/watch/bloc/similars_bloc.dart';
 import 'package:movie_app/presentation/watch/bloc/trailer_bloc.dart';
 
 part 'init_dependencies.dart';

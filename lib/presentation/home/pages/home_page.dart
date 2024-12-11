@@ -1,30 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:movie_app/common/bloc/generic_data_bloc.dart';
 import 'package:movie_app/common/widgets/loader.dart';
 import 'package:movie_app/core/configs/assets/app_vectors.dart';
-import 'package:movie_app/presentation/home/bloc/now_playing_bloc.dart';
-import 'package:movie_app/presentation/home/bloc/trending_bloc.dart';
-import 'package:movie_app/presentation/home/bloc/upcoming_bloc.dart';
+import 'package:movie_app/core/entities/movie.dart';
+import 'package:movie_app/core/usecase/usecase.dart';
+import 'package:movie_app/domain/home/entities/trending_movie.dart';
+import 'package:movie_app/domain/home/usecases/get_now_playing_movies.dart';
+import 'package:movie_app/domain/home/usecases/get_trending_movies.dart';
+import 'package:movie_app/domain/home/usecases/get_upcoming_movies.dart';
+import 'package:movie_app/init_dependencies_imports.dart';
 import 'package:movie_app/presentation/home/widgets/category_text.dart';
 import 'package:movie_app/presentation/home/widgets/movie_card.dart';
 import 'package:movie_app/presentation/home/widgets/trending_movies.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<TrendingBloc>().add(TrendingLoaded());
-    context.read<NowPlayingBloc>().add(NowPlayingLoaded());
-    context.read<UpcomingBloc>().add(UpcomingLoaded());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,56 +31,89 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const CategoryText(title: 'Trendings 🔥'),
-            BlocBuilder<TrendingBloc, TrendingState>(
-              builder: (context, state) {
-                if (state is TrendingFailure) {
-                  return Center(
-                    child: Text('${state.message} !!!'),
-                  );
-                } else if (state is TrendingLoading) {
-                  return const SizedBox(height: 250, child: Loader());
-                } else if (state is TrendingSuccess) {
-                  return TrendingMovies(movies: state.movies);
-                }
-                return Container();
-              },
+            BlocProvider(
+              create: (context) => GenericDataBloc<List<TrendingMovie>>()
+                ..add(
+                  GenericDataLoaded(
+                      serviceLocator<GetTrendingMovies>(), NoParams()),
+                ),
+              child: BlocBuilder<GenericDataBloc<List<TrendingMovie>>,
+                  GenericDataState>(
+                builder: (context, state) {
+                  if (state is GenericDataFailure) {
+                    return SizedBox(
+                      height: 250,
+                      child: errorText(state.message),
+                    );
+                  } else if (state is GenericDataLoading) {
+                    return const SizedBox(height: 250, child: Loader());
+                  } else if (state is GenericDataSuccess<List<TrendingMovie>>) {
+                    return TrendingMovies(movies: state.data);
+                  }
+                  return Container();
+                },
+              ),
             ),
             const SizedBox(height: 16),
             const CategoryText(title: 'Now Playing'),
-            BlocBuilder<NowPlayingBloc, NowPlayingState>(
-              builder: (context, state) {
-                if (state is NowPlayingFailure) {
-                  return Center(
-                    child: Text('${state.message} !!!'),
-                  );
-                } else if (state is NowPlayingLoading) {
-                  return const SizedBox(height: 200, child: Loader());
-                } else if (state is NowPlayingSuccess) {
-                  return MovieCard(movies: state.movies);
-                }
-                return Container();
-              },
+            BlocProvider(
+              create: (context) => GenericDataBloc<List<Movie>>()
+                ..add(
+                  GenericDataLoaded(
+                      serviceLocator<GetNowPlayingMovies>(), NoParams()),
+                ),
+              child:
+                  BlocBuilder<GenericDataBloc<List<Movie>>, GenericDataState>(
+                builder: (context, state) {
+                  if (state is GenericDataFailure) {
+                    return SizedBox(
+                      height: 200,
+                      child: errorText(state.message),
+                    );
+                  } else if (state is GenericDataLoading) {
+                    return const SizedBox(height: 200, child: Loader());
+                  } else if (state is GenericDataSuccess<List<Movie>>) {
+                    return MovieCard(movies: state.data);
+                  }
+                  return Container();
+                },
+              ),
             ),
             const SizedBox(height: 16),
             const CategoryText(title: 'Upcoming'),
-            BlocBuilder<UpcomingBloc, UpcomingState>(
-              builder: (context, state) {
-                if (state is UpcomingFailure) {
-                  return Center(
-                    child: Text('${state.message} !!!'),
-                  );
-                } else if (state is UpcomingLoading) {
-                  return const SizedBox(height: 200, child: Loader());
-                } else if (state is UpcomingSuccess) {
-                  return MovieCard(movies: state.movies);
-                }
-                return Container();
-              },
+            BlocProvider(
+              create: (context) => GenericDataBloc<List<Movie>>()
+                ..add(
+                  GenericDataLoaded(
+                      serviceLocator<GetUpcomingMovies>(), NoParams()),
+                ),
+              child:
+                  BlocBuilder<GenericDataBloc<List<Movie>>, GenericDataState>(
+                builder: (context, state) {
+                  if (state is GenericDataFailure) {
+                    return SizedBox(
+                      height: 200,
+                      child: errorText(state.message),
+                    );
+                  } else if (state is GenericDataLoading) {
+                    return const SizedBox(height: 200, child: Loader());
+                  } else if (state is GenericDataSuccess<List<Movie>>) {
+                    return MovieCard(movies: state.data);
+                  }
+                  return Container();
+                },
+              ),
             ),
             const SizedBox(height: 16),
           ],
         ),
       ),
+    );
+  }
+
+  Widget errorText(String message) {
+    return Center(
+      child: Text('$message !!!'),
     );
   }
 }

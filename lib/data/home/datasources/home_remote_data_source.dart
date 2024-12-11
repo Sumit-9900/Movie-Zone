@@ -27,7 +27,9 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
 
       return movies;
     } on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionTimeout) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.sendTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
         throw ServerException('Connection timeout. Please try again later.');
       }
       throw ServerException(e.response!.data['message']);
@@ -47,7 +49,9 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
 
       return movies;
     } on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionTimeout) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.sendTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
         throw ServerException('Connection timeout. Please try again later.');
       }
       throw ServerException(e.response!.data['message']);
@@ -67,7 +71,9 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
 
       return movies;
     } on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionTimeout) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.sendTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
         throw ServerException('Connection timeout. Please try again later.');
       }
       throw ServerException(e.response!.data['message']);
