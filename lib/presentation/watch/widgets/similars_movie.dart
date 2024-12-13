@@ -5,7 +5,7 @@ import 'package:movie_app/common/widgets/loader.dart';
 import 'package:movie_app/core/entities/movie.dart';
 import 'package:movie_app/domain/watch/usecases/get_movie_similars.dart';
 import 'package:movie_app/init_dependencies_imports.dart';
-import 'package:movie_app/presentation/home/widgets/movie_card.dart';
+import 'package:movie_app/common/widgets/movie_card.dart';
 
 class SimilarsMovie extends StatelessWidget {
   final Movie movie;

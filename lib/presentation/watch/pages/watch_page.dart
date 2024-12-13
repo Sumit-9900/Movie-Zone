@@ -32,7 +32,6 @@ class WatchPage extends StatelessWidget {
               const SizedBox(height: 16),
               _movieDescription(movie, context),
               const SizedBox(height: 16),
-              const SizedBox(height: 16),
               _moviesText('Recommendation'),
               RecommendationsMovie(movie: movie),
               const SizedBox(height: 16),

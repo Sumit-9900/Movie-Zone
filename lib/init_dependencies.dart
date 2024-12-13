@@ -2,7 +2,7 @@ part of 'init_dependencies_imports.dart';
 
 final serviceLocator = GetIt.instance;
 
-void initDependencies() {
+Future<void> initDependencies() async {
   final dio = Dio(
     BaseOptions(
       baseUrl: ApiUrl.baseURL,
@@ -14,10 +14,20 @@ void initDependencies() {
     ),
   )..interceptors.add(LoggerInterceptor());
 
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+
   serviceLocator.registerLazySingleton(() => dio);
+
+  serviceLocator.registerLazySingleton(() => prefs);
 
   serviceLocator.registerFactory<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(
+      serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerFactory<AuthLocalDataSource>(
+    () => AuthLocalDataSourceImpl(
       serviceLocator(),
     ),
   );
@@ -34,8 +44,15 @@ void initDependencies() {
     ),
   );
 
+  serviceLocator.registerFactory<SearchRemoteDataSource>(
+    () => SearchRemoteDataSourceImpl(
+      serviceLocator(),
+    ),
+  );
+
   serviceLocator.registerFactory<AuthRepositories>(
     () => AuthRepositoriesImpl(
+      serviceLocator(),
       serviceLocator(),
     ),
   );
@@ -52,6 +69,12 @@ void initDependencies() {
     ),
   );
 
+  serviceLocator.registerFactory<SearchRepositories>(
+    () => SearchRepositoriesImpl(
+      serviceLocator(),
+    ),
+  );
+
   serviceLocator.registerFactory(
     () => UserSignUp(
       serviceLocator(),
@@ -60,6 +83,12 @@ void initDependencies() {
 
   serviceLocator.registerFactory(
     () => UserLogIn(
+      serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerFactory(
+    () => UserLogOut(
       serviceLocator(),
     ),
   );
@@ -106,10 +135,17 @@ void initDependencies() {
     ),
   );
 
+  serviceLocator.registerFactory(
+    () => GetSearchedMovies(
+      serviceLocator(),
+    ),
+  );
+
   serviceLocator.registerLazySingleton(
     () => AuthBloc(
       userSignUp: serviceLocator(),
       userLogIn: serviceLocator(),
+      userLogOut: serviceLocator(),
     ),
   );
 

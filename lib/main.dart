@@ -4,11 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/core/configs/theme/app_theme.dart';
 import 'package:movie_app/init_dependencies_imports.dart';
 import 'package:movie_app/presentation/auth/bloc/auth_bloc.dart';
-import 'package:movie_app/presentation/home/pages/home_page.dart';
 import 'package:movie_app/presentation/splash/cubit/splash_cubit.dart';
+import 'package:movie_app/presentation/splash/pages/splash_page.dart';
 import 'package:movie_app/presentation/watch/bloc/trailer_bloc.dart';
 
-void main() {
+void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -17,7 +17,7 @@ void main() {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  initDependencies();
+  await initDependencies();
 
   runApp(
     MultiBlocProvider(
@@ -43,10 +43,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Movie App',
+      title: 'Movie Zone',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.appTheme,
-      home: const HomePage(),
+      home: const SplashPage(),
     );
   }
 }

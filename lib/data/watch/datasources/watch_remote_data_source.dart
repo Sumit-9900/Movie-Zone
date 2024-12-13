@@ -21,7 +21,9 @@ class WatchRemoteDataSourceImpl implements WatchRemoteDataSource {
       final data = Map<String, dynamic>.from(response.data['trailer']);
       return TrailerModel.fromJson(data);
     } on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionTimeout) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.sendTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
         throw ServerException('Connection timeout. Please try again later.');
       }
       throw ServerException(e.response!.data['message']);
@@ -37,7 +39,9 @@ class WatchRemoteDataSourceImpl implements WatchRemoteDataSource {
       final movies = data.map((movie) => MovieModel.fromJson(movie)).toList();
       return movies;
     } on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionTimeout) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.sendTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
         throw ServerException('Connection timeout. Please try again later.');
       }
       throw ServerException(e.response!.data['message']);
@@ -53,7 +57,9 @@ class WatchRemoteDataSourceImpl implements WatchRemoteDataSource {
       final movies = data.map((movie) => MovieModel.fromJson(movie)).toList();
       return movies;
     } on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionTimeout) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.sendTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
         throw ServerException('Connection timeout. Please try again later.');
       }
       throw ServerException(e.response!.data['message']);

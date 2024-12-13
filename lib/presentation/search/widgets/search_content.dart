@@ -1,34 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/common/bloc/generic_data_bloc.dart';
 import 'package:movie_app/common/helper/navigation/app_navigation.dart';
+import 'package:movie_app/common/widgets/loader.dart';
 import 'package:movie_app/core/configs/assets/app_images.dart';
 import 'package:movie_app/core/configs/theme/app_colors.dart';
 import 'package:movie_app/core/entities/movie.dart';
 import 'package:movie_app/presentation/watch/pages/watch_page.dart';
 
-class MovieCard extends StatelessWidget {
-  final List<Movie> movies;
-  final double horizontalPadding;
-  const MovieCard({
-    super.key,
-    required this.movies,
-    this.horizontalPadding = 16,
-  });
+class SearchContent extends StatelessWidget {
+  const SearchContent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 300,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-        itemBuilder: (context, index) {
-          return _movieCard(movies[index], context);
-        },
-        separatorBuilder: (context, index) {
-          return const SizedBox(width: 10);
-        },
-        itemCount: movies.length,
-      ),
+    return BlocBuilder<GenericDataBloc<List<Movie>>, GenericDataState>(
+      builder: (context, state) {
+        if (state is GenericDataLoading) {
+          return const SizedBox(height: 200, child: Loader());
+        } else if (state is GenericDataFailure) {
+          return Center(
+            child: Text(state.message),
+          );
+        } else if (state is GenericDataSuccess<List<Movie>>) {
+          return GridView.builder(
+            itemCount: state.data.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 0.6,
+            ),
+            itemBuilder: (context, index) {
+              return _movieCard(state.data[index], context);
+            },
+          );
+        }
+        return Container();
+      },
     );
   }
 

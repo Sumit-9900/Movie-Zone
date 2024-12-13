@@ -1,26 +1,27 @@
 import 'package:dartz/dartz.dart';
 import 'package:movie_app/core/error/exception.dart';
 import 'package:movie_app/core/error/failure.dart';
+import 'package:movie_app/data/auth/datasources/auth_local_data_source.dart';
 import 'package:movie_app/data/auth/datasources/auth_remote_data_source.dart';
 import 'package:movie_app/data/auth/models/auth_params_model.dart';
 import 'package:movie_app/domain/auth/entities/auth_params.dart';
-import 'package:movie_app/domain/auth/entities/user_response.dart';
+import 'package:movie_app/domain/auth/entities/log_in.dart';
+import 'package:movie_app/domain/auth/entities/sign_up.dart';
 import 'package:movie_app/domain/auth/repositories/auth_repositories.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepositoriesImpl implements AuthRepositories {
   final AuthRemoteDataSource authRemoteDataSource;
-  AuthRepositoriesImpl(this.authRemoteDataSource);
+  final AuthLocalDataSource authLocalDataSource;
+  AuthRepositoriesImpl(this.authRemoteDataSource, this.authLocalDataSource);
 
   @override
-  Future<Either<Failure, UserResponse>> logIn(AuthParams params) async {
+  Future<Either<Failure, LogIn>> logIn(AuthParams params) async {
     try {
       final user = await authRemoteDataSource.logIn(
         AuthParamsModel.fromEntity(params),
       );
 
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', user.user.token);
+      await authLocalDataSource.saveToken(user.data.token);
 
       return right(user);
     } on ServerException catch (e) {
@@ -29,14 +30,13 @@ class AuthRepositoriesImpl implements AuthRepositories {
   }
 
   @override
-  Future<Either<Failure, UserResponse>> signUp(AuthParams params) async {
+  Future<Either<Failure, SignUp>> signUp(AuthParams params) async {
     try {
       final user = await authRemoteDataSource.signUp(
         AuthParamsModel.fromEntity(params),
       );
 
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', user.user.token);
+      await authLocalDataSource.saveToken(user.data.token);
 
       return right(user);
     } on ServerException catch (e) {
@@ -46,13 +46,22 @@ class AuthRepositoriesImpl implements AuthRepositories {
 
   @override
   Future<bool> isLoggedIn() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token');
+    final token = authLocalDataSource.getToken();
 
     if (token != null) {
       return true;
     } else {
       return false;
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> logOut() async {
+    try {
+      final isUserLoggedOut = await authLocalDataSource.clearToken();
+      return right(isUserLoggedOut);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
     }
   }
 }

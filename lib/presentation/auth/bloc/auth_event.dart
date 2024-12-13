@@ -12,3 +12,5 @@ final class AuthLogIn extends AuthEvent {
   final AuthParams params;
   AuthLogIn(this.params);
 }
+
+final class AuthLogOut extends AuthEvent {}
